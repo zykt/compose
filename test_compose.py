@@ -73,3 +73,25 @@ def test_complex_composition():
 
     assert filter_by_first_sort_by_second([('Hello', 10), ('NOCAPS', -8), ('Welcome', 9), ('speaklouder', 80)]) == \
         [('Welcome', 9), ('Hello', 10)]
+
+
+def test_full_composition():
+    def first_map(f):
+        @compose
+        def helper(t):
+            (x, y) = t
+            return f(x), y
+        return helper
+
+    def second_map(f):
+        @compose
+        def helper(t):
+            (x, y) = t
+            return x, f(y)
+        return helper
+
+    assert ((-4, 3) >> first_map(lambda x: x**2)
+                    >> second_map(lambda x: x**2)
+                    >> compose(sum)
+                    >> compose(lambda x: x**0.5)
+                    == 5)
