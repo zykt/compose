@@ -12,9 +12,9 @@ class compose:
     def __rrshift__(self, other):
         if callable(other):
             self.func = _compose_helper(self.func, other)
+            return self
         else:
-            self.func = self.func(other)
-        return self
+            return self.func(other)
 
 
 def _compose_helper(f, g):
