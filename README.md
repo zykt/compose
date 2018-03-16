@@ -26,5 +26,5 @@ def negative(x):
   return x <= 0
 
 # find all complex numbers with their real parts < 0
-assert filter(real >> negative, [1+2j, 3, -1-1j, 4j]) == [-1-1j, 4j]
+assert list(filter(real >> negative, [1+2j, 3, -1-1j, 4j])) == [-1-1j, 4j]
 ```
