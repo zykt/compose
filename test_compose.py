@@ -53,3 +53,23 @@ def test_multiple_composables():
 
     assert composition('hELlo') == "HEyyO"
 
+
+def test_complex_composition():
+    from functools import partial
+
+    @compose
+    def first(l): return l[0]
+
+    @compose
+    def second(l): return l[1]
+
+    @compose
+    def is_title(s): return s.istitle()
+
+    @compose
+    def id(x): return x
+
+    filter_by_first_sort_by_second = id >> partial(filter, first >> is_title) >> partial(sorted, key=second >> abs)
+
+    assert filter_by_first_sort_by_second([('Hello', 10), ('NOCAPS', -8), ('Welcome', 9), ('speaklouder', 80)]) == \
+        [('Welcome', 9), ('Hello', 10)]
